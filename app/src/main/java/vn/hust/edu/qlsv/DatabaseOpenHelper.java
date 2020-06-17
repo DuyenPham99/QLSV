@@ -135,7 +135,9 @@ public class DatabaseOpenHelper {
         db=context.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
         db.beginTransaction();
         try {
-            long ret = db.delete("Student", "MSSV= "+student.getMssv(), null);
+            if(db.delete("student", "MSSV= "+student.getMssv(), null)>0){
+                Toast.makeText(context, "successful", Toast.LENGTH_SHORT).show();
+            }
             db.setTransactionSuccessful();
         } catch (Exception ex) {
             ex.printStackTrace();

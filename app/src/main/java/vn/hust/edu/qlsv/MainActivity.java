@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     ArrayList<Student> arrayList;
     StudentAdapter studentAdapter;
+    ListView listView;
     DatabaseOpenHelper databaseAccess;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +32,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         databaseAccess = new DatabaseOpenHelper(MainActivity.this);
+
+        listView= findViewById(R.id.list_view);
         arrayList= databaseAccess.getAllStudent();
-
-        //Khai báo RecycleView
-        final RecyclerView recyclerView= (RecyclerView)findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        //Khai báo kiểu layour manage
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        //Khai báo Adapter
         studentAdapter= new StudentAdapter(MainActivity.this, R.layout.layout_row, arrayList);
-        recyclerView.setAdapter(studentAdapter);
+        listView.setAdapter(studentAdapter);
+
+        registerForContextMenu(listView);
     }
 
     //add student
@@ -141,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         student.setBirthday(editBirthday.getText().toString());
                         student.setEmail(editEmail.getText().toString());
                         student.setAddress(editAddr.getText().toString());
-                        imageView.setImageResource(R.drawable.ic_person);
+                       // imageView.setImageResource(R.drawable.ic_person);
 
                         databaseAccess.updateStudent(student);
                         arrayList.set(info.position, student);
